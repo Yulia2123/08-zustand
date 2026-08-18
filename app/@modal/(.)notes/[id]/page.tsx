@@ -5,7 +5,7 @@ import {
 } from "@tanstack/react-query";
 
 import { fetchNoteById } from "@/lib/api";
-import NotePreviewClient from "@/components/NotePreview/NotePreview.client";
+import NotePreviewClient from "@/app/@modal/(.)notes/[id]/NotePreview.client";
 
 interface PageProps {
   params: Promise<{
