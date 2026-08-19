@@ -4,6 +4,9 @@ import type { NotesResponse } from "@/types/notes";
 
 const api = axios.create({
   baseURL: "https://notehub-public.goit.study/api",
+  headers: {
+    Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`,
+  },
 });
 
 export const fetchNotes = async (
