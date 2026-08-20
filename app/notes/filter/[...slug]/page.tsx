@@ -26,6 +26,22 @@ export async function generateMetadata({
     description: tag
       ? `Notes filtered by ${tag} tag.`
       : "All notes in NoteHub.",
+
+    openGraph: {
+      title: tag ? `${tag} Notes | NoteHub` : "All Notes | NoteHub",
+      description: tag
+        ? `Notes filtered by ${tag} tag.`
+        : "All notes in NoteHub.",
+      url: "https://notehub.com/",
+      images: [
+        {
+          url: "https://ac.goit.global/fullstack/react/notehub-og-meta.jpg",
+          width: 1200,
+          height: 630,
+          alt: "NoteHub",
+        },
+      ],
+    },
   };
 }
 
