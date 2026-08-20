@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 
 import { fetchNotes } from "@/lib/api";
@@ -8,8 +9,6 @@ import type { Note } from "@/types/note";
 
 import SearchBox from "@/components/SearchBox/SearchBox";
 import Pagination from "@/components/Pagination/Pagination";
-import Modal from "@/components/Modal/Modal";
-import NoteForm from "@/components/NoteForm/NoteForm";
 import NoteList from "@/components/NoteList/NoteList";
 
 interface NotesClientProps {
@@ -20,16 +19,18 @@ export default function NotesClient({ tag }: NotesClientProps) {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedSearch(search);
-      setPage(1);
     }, 500);
 
     return () => clearTimeout(timer);
   }, [search]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [debouncedSearch]);
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["notes", page, debouncedSearch, tag],
@@ -47,10 +48,6 @@ export default function NotesClient({ tag }: NotesClientProps) {
     setPage(newPage);
   };
 
-  const handleCreateSuccess = () => {
-    setIsModalOpen(false);
-  };
-
   if (isLoading) {
     return <p>Loading...</p>;
   }
@@ -63,23 +60,15 @@ export default function NotesClient({ tag }: NotesClientProps) {
     <>
       <SearchBox value={search} onChange={handleSearchChange} />
 
-      <button type="button" onClick={() => setIsModalOpen(true)}>
-        Create note
-      </button>
+      <Link href="/notes/action/create">Create note</Link>
 
-      <NoteList notes={data.notes} />
+      {data.notes.length > 0 && <NoteList notes={data.notes} />}
 
       <Pagination
         pageCount={data.totalPages}
         currentPage={page}
         onPageChange={handlePageChange}
       />
-
-      {isModalOpen && (
-        <Modal onClose={() => setIsModalOpen(false)}>
-          <NoteForm />
-        </Modal>
-      )}
     </>
   );
 }
