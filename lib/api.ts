@@ -2,7 +2,7 @@ import axios from "axios";
 import type { CreateNoteData, Note } from "@/types/note";
 import type { NotesResponse } from "@/types/notes";
 
-const api = axios.create({
+export const api = axios.create({
   baseURL: "https://notehub-public.goit.study/api",
   headers: {
     Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`,
